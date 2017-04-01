@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class StateObject : MonoBehaviour {
 
@@ -13,17 +14,27 @@ public enum GAMESTATE
     }
     public GAMESTATE gameState;
     private GAMESTATE lastState;
-    ControlObject[] objList;
 
+    public List<ControlObject> objListdy;
 
 
     void Start()
     {
+        objListdy = new List<ControlObject>();
         setMainState();
-        objList = FindObjectsOfType<ControlObject>();
- 
+
+        ControlObject[] objList = FindObjectsOfType<ControlObject>();
+
+        foreach (ControlObject ctrl in objList)
+        {
+            objListdy.Add(ctrl);
+        }
+
         change();
     }
+
+   
+
 
     public void chanageState(int _in)
     {
@@ -34,7 +45,7 @@ public enum GAMESTATE
     void updateObjects()
     {
 
-        foreach(ControlObject obj in objList)
+        foreach(ControlObject obj in objListdy)
         {
             if (obj != null)
             {
@@ -48,7 +59,8 @@ public enum GAMESTATE
 
     void Update()
     {
-        if(gameState != lastState)
+
+        if (gameState != lastState)
         {
             change();
             
@@ -71,7 +83,7 @@ public enum GAMESTATE
     void initalSet()
     {
 
-        foreach (ControlObject obj in objList)
+        foreach (ControlObject obj in objListdy)
         {
             obj.updateState();
         }

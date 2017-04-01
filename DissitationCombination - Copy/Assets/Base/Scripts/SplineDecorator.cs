@@ -22,42 +22,49 @@ public class SplineDecorator : MonoBehaviour
     MeshManipulator meshMap;
 
     public List<Transform> controlNodes;
-    
 
+    bool launched = false;
 
     private MeshMaker shapeHold;
     private MeshMaker shapeholdTwo;
 
-    void Awake()
+    public void launch()
     {
+        if (!launched)
+        {
+            launched = true;
+            spline = GetComponent<BezierSpline>();
+            controlPoints = new List<GameObject>();
+            setControlObjet();
+            shapeHold = GameObject.Find("ScriptHolder").GetComponent<MeshMaker>();
 
-        spline = GetComponent<BezierSpline>();
-        controlPoints = new List<GameObject>();
-        shapeHold = GameObject.Find("ScriptHolder").GetComponent<MeshMaker>();
-        shapeHold.Begin();
-        items[0] = shapeHold.pointPrefab;
+            shapeHold.Begin();
+            items[0] = shapeHold.pointPrefab;
 
-        vertexPoints = new List<GameObject>();
-        splinePoints = new Vector3[spline.points.Length];
-        meshMap = GetComponent<MeshManipulator>();
-        identPos();
-         runCreation();
-
+            vertexPoints = new List<GameObject>();
+            splinePoints = new Vector3[spline.points.Length];
+            meshMap = GetComponent<MeshManipulator>();
+            identPos();
+            runCreation();
+        }
         
-            setControlObje();
+           
         
     }
 
-    void setControlObje()
+    void setControlObjet()
     {
         int counter = 0;
         int nodeCounter = 0;
         foreach (Vector3 Vec in spline.points)
         {
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             //go.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             go.tag = "MOVABLE";
+            go.AddComponent<ControlObject>();
+            go.GetComponent<ControlObject>().m_myState = StateObject.GAMESTATE.DRAWMEMB;
             go.transform.position = Vec;
+            go.transform.localScale = new Vector3(1.0f,2.0f, 1.0f);
             controlPoints.Add(go);
             go.transform.parent = controlNodes[nodeCounter];
             go.GetComponent<Renderer>().material.color = Color.green;
@@ -135,6 +142,11 @@ public class SplineDecorator : MonoBehaviour
 
     void movNode()
     {
+        if(spline == null)
+        {
+            return;
+        }
+
         for (int i = 0; i < spline.points.Length; i++)
         {
             spline.points[i] = controlPoints[i].transform.position;
@@ -143,13 +155,15 @@ public class SplineDecorator : MonoBehaviour
 
     private void Update()
     {
-        movNode();
-        if (testIdet())
+        if (launched)
         {
-            runCreation();
+            movNode();
+            if (testIdet())
+            {
+                runCreation();
 
+            }
         }
-
     }
 
     void runCreation()

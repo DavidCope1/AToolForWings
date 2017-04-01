@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
+
 public class MeshMakerMOD : MonoBehaviour
 {
 
@@ -9,7 +11,7 @@ public class MeshMakerMOD : MonoBehaviour
 
     private SplineDecoratorMOD decor;
 
-
+    public GameObject objPairent;
 
     private List<GameObject> Inputpoints;
     private Vector3[] pointLocs;
@@ -28,14 +30,18 @@ public class MeshMakerMOD : MonoBehaviour
 
     public void Begin()
     {
-       // vCol = GetComponent<VertexColour>();
-        model = new Mesh();
+        
+    // vCol = GetComponent<VertexColour>();
+    model = new Mesh();
         MeshHolder = new GameObject();
         MeshHolder.AddComponent<MeshFilter>();
         MeshHolder.GetComponent<MeshFilter>().mesh = model;
         MeshHolder.AddComponent<ControlObject>();
         MeshHolder.GetComponent<ControlObject>().m_myState = StateObject.GAMESTATE.DRAWWING;
-    model.name = "wingMesh";
+
+        MeshHolder.transform.parent = objPairent.transform;
+
+        model.name = "wingMesh";
         if (MeshHolder.GetComponent<MeshRenderer>() == null)
         {
             MeshHolder.gameObject.AddComponent<MeshRenderer>();

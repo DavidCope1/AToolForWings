@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class FetherTool : MonoBehaviour {
     public BezierSpline spline;
-    public bool enabaled;
+    public bool enabaled =true;
     public bool rotRight;
     public bool rotLeft;
     public int frequency;
@@ -17,12 +17,66 @@ public class FetherTool : MonoBehaviour {
     public Transform Root;
     public Transform ControlObjectOne;
     public Transform ControlObjectTwo;
+    private List<GameObject> splineRelatedControlPoints;
 
     public GameObject[] items;
     private List<GameObject> createdFethers;
 
+    public List<GameObject> getCreatedFethers()
+    {
+        return createdFethers;
+    }
+
+    void collatePoints()
+    {
+
+        splineRelatedControlPoints = GetComponent<SplineDecorator>().controlPoints;
+    }
+
+    public void triggerStart()
+    {
+        createFethers();
+        collatePoints();
+    }
+
+    public void triggerUpdate()
+    {
+        clearPrev();
+        createFethers();
+    }
+
+    private void clearPrev()
+    {
+        foreach(GameObject go in createdFethers)
+        {
+            Destroy(go);
+        }
+    }
+
+    private bool testPoints()
+    {
+        SplineDecorator SPD = GetComponent<SplineDecorator>();
+        if(splineRelatedControlPoints == null)
+        {
+            collatePoints();
+
+        }
+
+
+        for (int i = 0; i < splineRelatedControlPoints.Count; i++)
+        {
+            if (SPD.controlPoints[i].gameObject.transform.position != splineRelatedControlPoints[i].transform.position)
+            {
+                splineRelatedControlPoints[i].transform.position = GetComponent<SplineDecorator>().controlPoints[i].transform.position;
+                print("Returning true");
+                return true;
+            }
+        }
+        return false;
+    }
+
     //inital setup and populating pool
-    private void Awake()
+    private void createFethers()
     {
         if (enabaled)
         {
@@ -97,7 +151,11 @@ public class FetherTool : MonoBehaviour {
         //    }
         //}
 
+        if(testPoints())
+        {
 
+            triggerUpdate();
+        }
 
     }
 

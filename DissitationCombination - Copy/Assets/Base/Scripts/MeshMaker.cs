@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 public class MeshMaker : MonoBehaviour
 {
-
+    public bool enabled;
     //public List<GameObject> InitalShape;
     public GameObject pointPrefab;
 
     public string name;
+
 
 
     private List<GameObject> Inputpoints;
@@ -51,7 +52,9 @@ public class MeshMaker : MonoBehaviour
 
     public void createMesh()
     {
-        if(model == null)
+        if(enabled)
+        { 
+        if (model == null)
         {
             model = new Mesh();
         }
@@ -91,7 +94,8 @@ public class MeshMaker : MonoBehaviour
         MeshHolder.gameObject.GetComponent<Renderer>().material = _inMat;
         model.RecalculateNormals();
 
-       // vCol.MakeColour(model);
+            // vCol.MakeColour(model);
+        }
     }
 
     private void calcTris(int _offset)
