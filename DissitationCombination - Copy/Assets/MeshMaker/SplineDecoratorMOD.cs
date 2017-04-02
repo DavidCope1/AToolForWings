@@ -21,6 +21,7 @@ public class SplineDecoratorMOD : MonoBehaviour
     //private FlapProducer flapHold;
     void Awake()
     {
+    
         //flapHold = GetComponent<FlapProducer>();
         spline = GetComponent<BezierSpline>();
         controlPoints = new List<GameObject>();
@@ -44,6 +45,7 @@ public class SplineDecoratorMOD : MonoBehaviour
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
            
+
             go.transform.position = Vec;
             controlPoints.Add(go);
             go.transform.parent = controlNodes[nodeCounter];

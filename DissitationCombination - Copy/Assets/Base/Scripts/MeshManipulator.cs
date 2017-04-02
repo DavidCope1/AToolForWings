@@ -14,6 +14,7 @@ public class MeshManipulator : MonoBehaviour {
     private GameObject currentSelect;
     public Material setCol;
     Material matHold;
+    Transform pairnentHold;
 
     public bool getUpdated()
     {
@@ -30,24 +31,28 @@ public class MeshManipulator : MonoBehaviour {
         {
             Debug.DrawRay(ray.origin, ray.direction);
 
-            if (Input.GetMouseButtonDown(0) && (hit.transform.tag == "MOVABLE"))
+            if (Input.GetMouseButtonDown(0) )
             {
-                if (!selected)
+                if(!selected && hit.transform.tag == "MOVABLE")
                 {
                     currentSelect = hit.transform.gameObject;
                     matHold = currentSelect.GetComponent<Renderer>().material;
                     currentSelect.GetComponent<Renderer>().material = setCol;
                     selected = true;
-
+                    pairnentHold = hit.transform.parent;
+                    hit.transform.parent = null;
                 }
-                else
+
+                else if(selected)
                 {
                     currentSelect.GetComponent<Renderer>().material = matHold;
                     currentSelect = null;
                     selected = false;
                     updated = true;
-
+                    currentSelect.transform.parent = pairnentHold;
+                    pairnentHold = null;
                 }
+                           
 
 
             }

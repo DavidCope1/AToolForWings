@@ -21,7 +21,7 @@ public class FixXandY : MonoBehaviour {
         }
         if (myXY.y != transform.position.y)
         {
-            transform.position = new Vector3(transform.position.y, myXY.y, transform.position.z);
+            transform.position = new Vector3(transform.position.x, myXY.y, transform.position.z);
         }
 
 

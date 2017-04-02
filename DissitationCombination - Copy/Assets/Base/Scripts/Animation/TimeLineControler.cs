@@ -10,7 +10,7 @@ public class TimeLineControler : MonoBehaviour {
     public GameObject startPos;
     public GameObject endPos;
     public GameObject bar;
-    private LineRenderer LR;
+   // private LineRenderer LR;
     public SplineFollower currentPoint;
 
     public enum axis {
@@ -27,7 +27,7 @@ public class TimeLineControler : MonoBehaviour {
 	void Start () {
 
         bar.transform.position = startPos.transform.position;
-        LR = GetComponent<LineRenderer>();
+      //  LR = GetComponent<LineRenderer>();
         
     }
 	
@@ -39,11 +39,11 @@ public class TimeLineControler : MonoBehaviour {
 
  
         int counter = 0;
-        foreach(GameObject go in markerPoint)
-        {
-            LR.SetPosition(counter, animationPoints[counter].transform.position);
-                counter++;
-        }
+        //foreach(GameObject go in markerPoint)
+        //{
+        //    LR.SetPosition(counter, animationPoints[counter].transform.position);
+        //        counter++;
+        //}
 
 
         bar.transform.position = Vector3.Lerp(startPos.transform.position, endPos.transform.position, currentVal);
@@ -77,6 +77,6 @@ public class TimeLineControler : MonoBehaviour {
         }
 
         curentZ = currentPoint.transform.position.z;//Mathf.Lerp(animationPoints[prevTarget].transform.position.z, animationPoints[currentTarget].transform.position.z, currentVal/2 );
-        curentZ = (curentZ - transform.root.transform.position.z)/10;
+        curentZ = (curentZ - transform.root.transform.position.z);
     }
 }

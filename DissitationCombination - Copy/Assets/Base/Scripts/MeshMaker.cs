@@ -3,11 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 public class MeshMaker : MonoBehaviour
 {
-    public bool enabled;
+
     //public List<GameObject> InitalShape;
     public GameObject pointPrefab;
 
-    public string name;
 
 
 
@@ -22,26 +21,36 @@ public class MeshMaker : MonoBehaviour
     private GameObject MeshHolder;
     private int counter = 0;
     public bool capped;
-   // VertexColour vCol;
+    // VertexColour vCol;
+    bool launched = false;
 
     private SplineDecorator spD;
 
     public void Begin()
     {
-       // vCol = GetComponent<VertexColour>();
-        model = new Mesh();
-        MeshHolder = new GameObject();
-        MeshHolder.AddComponent<MeshFilter>();
-        MeshHolder.GetComponent<MeshFilter>().mesh = model;
-        MeshHolder.name = name;
-        model.name = name + "MDL";
-        MeshHolder.AddComponent<ControlObject>();
-        MeshHolder.GetComponent<ControlObject>().setState(StateObject.GAMESTATE.DRAWWING);
-        if (MeshHolder.GetComponent<MeshRenderer>() == null)
+        // vCol = GetComponent<VertexColour>();
+        if (!launched)
         {
-            MeshHolder.gameObject.AddComponent<MeshRenderer>();
+            launched = true;
+            model = new Mesh();
+            MeshHolder = new GameObject();
+            MeshHolder.AddComponent<MeshFilter>();
+            MeshHolder.GetComponent<MeshFilter>().mesh = model;
+
+            model.name = name + "MDL";
+            MeshHolder.AddComponent<ControlObject>();
+            MeshHolder.GetComponent<ControlObject>().setState(StateObject.GAMESTATE.DRAWWING);
+            if (MeshHolder.GetComponent<MeshRenderer>() == null)
+            {
+                MeshHolder.gameObject.AddComponent<MeshRenderer>();
+            }
+
         }
+
+
     }
+
+
 
     public Mesh getModel()
     {

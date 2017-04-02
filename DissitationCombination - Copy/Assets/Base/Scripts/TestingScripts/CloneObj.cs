@@ -9,19 +9,25 @@ public class CloneObj : MonoBehaviour {
     public GameObject ctO3;
     public GameObject fethers;
     public GameObject rootObj;
+    public Material _inMat;
 
+    //Hack job and a half
      float x =1;
      float y =0.5f;
      float z = 0.38f;
 
 
+    public MeshMaker MM;
+    Mesh invertedMesh;
+    GameObject invertedMem;
 
     FetherTool littleFeth;
     FetherTool bigFeth;
     GameObject clonectO1;
     GameObject clonectO2;
      GameObject clonectO3;
-    bool begin = false;
+    bool beginWing = false;
+    bool beginMemb = false;
     public float distInX = 0;
 
     public List<GameObject> clonedFethersbig;
@@ -29,14 +35,14 @@ public class CloneObj : MonoBehaviour {
 
     // Use this for initialization
     public void createClone() {
-        if(begin)
+        if(beginWing)
         {
             return;
         }
         rootObj = Instantiate(new GameObject());
         rootObj.name = "CloneRoot";
         rootObj.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
-        begin = true;
+        beginWing = true;
         clonectO1 = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         clonectO1.transform.position = new Vector3(-(ctO1.transform.position.x + distInX), ctO1.transform.position.y, ctO1.transform.position.z);
 
@@ -86,7 +92,7 @@ public class CloneObj : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (begin)
+        if (beginWing)
         {
             rootObj.transform.rotation = new Quaternion(-90f, -90f, 180f, 1.0f);
             //Set new pos invertes
@@ -102,6 +108,11 @@ public class CloneObj : MonoBehaviour {
             clonectO3.transform.rotation = new Quaternion(ctO3.transform.rotation.x, ctO3.transform.rotation.y, -ctO3.transform.rotation.z, 1.0f);
 
             plaseFethersinInversePos();
+        }
+
+        if(beginMemb)
+        {
+
         }
     }
 
@@ -131,6 +142,25 @@ public class CloneObj : MonoBehaviour {
         //}
 
 
+
+    }
+
+    public void cloneMembrain()
+    {
+        if(beginMemb)
+        {
+            return;
+        }
+        beginMemb = true;
+
+        invertedMem = new GameObject();
+        invertedMem.AddComponent<MeshRenderer>();
+        invertedMem.AddComponent<MeshFilter>();
+        invertedMem.AddComponent<NormalFipper>();
+
+        invertedMem.GetComponent<Renderer>().material = _inMat;
+        invertedMem.GetComponent<MeshFilter>().mesh = MM.getModel();
+        invertedMem.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
 
     }
 }

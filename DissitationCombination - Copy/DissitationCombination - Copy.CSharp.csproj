@@ -98,11 +98,14 @@
     <Compile Include="Assets\Base\Scripts\TestingScripts\ClothInteraction5000.cs" />
     <Compile Include="Assets\Base\Scripts\TestingScripts\FlapProducer.cs" />
     <Compile Include="Assets\Base\Scripts\TestingScripts\LerpToAnimate.cs" />
+    <Compile Include="Assets\Base\Scripts\TestingScripts\NormalFipper.cs" />
     <Compile Include="Assets\Base\Scripts\TestingScripts\SimpleLerp.cs" />
     <Compile Include="Assets\Base\Scripts\TestingScripts\SimpleLookAt.cs" />
     <Compile Include="Assets\Base\Scripts\TestingScripts\SingleInverter.cs" />
     <Compile Include="Assets\Base\Scripts\TestingScripts\meshstealer5000.cs" />
     <Compile Include="Assets\Base\Scripts\TimeEffectSlider.cs" />
+    <Compile Include="Assets\Base\Scripts\TimeLineApplication.cs" />
+    <Compile Include="Assets\Base\Scripts\TimeLineToObject.cs" />
     <Compile Include="Assets\Base\Scripts\VertexColour.cs" />
     <Compile Include="Assets\Base\Scripts\simpleRoter.cs" />
     <Compile Include="Assets\Base\Scripts\simpleRoter1.cs" />

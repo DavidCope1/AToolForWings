@@ -11,6 +11,8 @@ public class SplineDecorator : MonoBehaviour
     private float lastVal;
     public bool seeControlNodes;
 
+    public bool adjustZ;
+
     private BezierSpline spline;
     private Vector3[] splinePoints;
     public int frequency;
@@ -28,11 +30,30 @@ public class SplineDecorator : MonoBehaviour
     private MeshMaker shapeHold;
     private MeshMaker shapeholdTwo;
 
+    bool chanaging = false;
+
+
+    public bool EnableVR;
+    public GameObject VRHEAD;
+    public GameObject VRHANDR;
+    public GameObject VRHANDL;
+
+    public void setZchange(float _In)
+    {
+        chanaging = true;
+        zchange = 30 *_In;
+
+    }
+
+
     public void launch()
     {
         if (!launched)
         {
             launched = true;
+
+         
+
             spline = GetComponent<BezierSpline>();
             controlPoints = new List<GameObject>();
             setControlObjet();
@@ -41,11 +62,22 @@ public class SplineDecorator : MonoBehaviour
             shapeHold.Begin();
             items[0] = shapeHold.pointPrefab;
 
+
+
             vertexPoints = new List<GameObject>();
             splinePoints = new Vector3[spline.points.Length];
             meshMap = GetComponent<MeshManipulator>();
             identPos();
             runCreation();
+    
+               
+
+
+
+
+
+
+            
         }
         
            
@@ -78,7 +110,7 @@ public class SplineDecorator : MonoBehaviour
             if (!seeControlNodes)
             {
                 go.GetComponent<MeshRenderer>().enabled = false;
-                go.GetComponent<SphereCollider>().enabled = false;
+               // go.GetComponent<SphereCollider>().enabled = false;
             }
 
 
@@ -152,7 +184,8 @@ public class SplineDecorator : MonoBehaviour
             spline.points[i] = controlPoints[i].transform.position;
         }
     }
-
+    bool setToUpdate= false;
+    bool manualLaunch = false;
     private void Update()
     {
         if (launched)
@@ -164,6 +197,20 @@ public class SplineDecorator : MonoBehaviour
 
             }
         }
+
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            if(!manualLaunch)
+            {
+                launch();
+                manualLaunch = true;
+            }
+        }
+
+
+
+
+
     }
 
     void runCreation()
@@ -199,17 +246,19 @@ public class SplineDecorator : MonoBehaviour
                     testValForEnd = testValForEnd * 2;
                 }
 
+                if (adjustZ)
+                {
                     Transform tr = item.transform.GetChild(3).transform;
 
-                tr.position = tr.position = new Vector3((testVal + (p / 10) - testValForEnd), (tr.position.y), ((-zchange-10)+endAdjuster ));
+                    tr.position = tr.position = new Vector3((testVal + (p / 10) - testValForEnd), (tr.position.y), ((-zchange - 10) + endAdjuster));
 
-                tr = item.transform.GetChild(4).transform;
+                    tr = item.transform.GetChild(4).transform;
 
-               tr.position = tr.position = new Vector3((testVal+(p/10)- testValForEnd), (tr.position.y), ((-zchange-10) + endAdjuster));
-                Destroy(item);
+                    tr.position = tr.position = new Vector3((testVal + (p / 10) - testValForEnd), (tr.position.y), ((-zchange - 10) + endAdjuster));
+                 
+                }
 
-
-
+                 Destroy(item);
                 Vector3 position = spline.GetPoint(p * stepSize);
                 item.transform.localPosition = position;
                 if (lookForward)
